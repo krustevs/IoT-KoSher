@@ -33,6 +33,26 @@ db.open(function(e, d){
 });
 
 var accounts = db.collection('accounts');
+var temperatures = db.collection('temperatures');
+
+
+/* hive related methods */
+exports.setTemperature = function(dev, newTemp, callback)
+{
+	temperatures.findOne({device:dev}, function(e, o) {
+		if (o){
+			temperatures.updateOne({device:dev}, {$set:{temperature:newTemp}}, callback );
+		}	else{
+			temperatures.insertOne({device:dev, temperature:newTemp}, callback );
+		}
+	});
+}
+
+exports.getTemperature = function(dev, callback)
+{
+	temperatures.findOne({device:dev}, callback );
+}
+
 
 /* login validation methods */
 
