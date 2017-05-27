@@ -177,13 +177,40 @@ module.exports = function(app) {
 			}
 	    });
 	});
-	
+
 	app.get('/reset', function(req, res) {
 		AM.delAllRecords(function(){
 			res.redirect('/print');	
 		});
 	});
-	
+
+// read & write temperature //
+
+	app.post('/hive_data', function (req, res) {
+		console.log("POST /hive_data " + JSON.stringify(req.body));
+
+		AM.setTemperature(req.body['device'], req.body['temperature'], function(e, o){
+			if (o){
+				res.status(200).send('ok');
+			}	else{
+				res.status(400).send('unable to set temperature');
+			}
+		})
+	});
+
+	app.get('/hive_data/:device', function (req, res) {
+
+		console.log("GET /hive_data for device " + req.params.device);
+		
+		AM.getTemperature(req.params.device, function(e, o){
+			if (o){
+				res.status(200).send(o);
+			}	else{
+				res.status(400).send('unable to get temperature');
+			}
+		})
+	});
+
 	app.get('*', function(req, res) { res.render('404', { title: 'Page Not Found'}); });
 
 };
