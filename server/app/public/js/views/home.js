@@ -27,18 +27,15 @@ $(document).ready(function(){
 	});
 	$('#name-tf').focus();
 
-	$('#account-form h2').text('Hello, user!');
-
-	var settingsButton = document.createElement('button');
-	settingsButton.className = 'btn btn-primary';
+	var settingsButton = document.getElementById('account-settings-btn');
 	settingsButton.addEventListener('click', showAccountSettings);
-	var element = document.getElementById('account-form-container');
-	element.appendChild(settingsButton);
 
+	var element = document.getElementById('account-form-container');
+	element.style.display = 'none';
 
 	function showAccountSettings(){
 		// customize the account settings form //
-	
+		element.style.display = '';
 		$('#account-form h2').text('Account Settings');
 		$('#account-form #sub1').text('Here are the current settings for your account.');
 		$('#user-tf').attr('disabled', 'disabled');
