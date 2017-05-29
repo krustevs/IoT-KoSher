@@ -41,6 +41,7 @@ $(document).ready(function(){
 
 	function showDashboards(){
 		accountContainer.style.display = 'none';
+	   
 	}
 
 	function showAccountSettings(){
