@@ -27,15 +27,25 @@ $(document).ready(function(){
 	});
 	$('#name-tf').focus();
 
+	//add account settings button
 	var settingsButton = document.getElementById('account-settings-btn');
 	settingsButton.addEventListener('click', showAccountSettings);
 
-	var element = document.getElementById('account-form-container');
-	element.style.display = 'none';
+	//hide the account settings
+	var accountContainer = document.getElementById('account-form-container');
+	accountContainer.style.display = 'none';
+
+	//add dashboards button
+	var dashboardButton = document.getElementById('dashboards-btn');
+	dashboardButton.addEventListener('click', showDashboards);
+
+	function showDashboards(){
+		accountContainer.style.display = 'none';
+	}
 
 	function showAccountSettings(){
-		// customize the account settings form //
-		element.style.display = '';
+		// customize the account settings form 
+		accountContainer.style.display = '';
 		$('#account-form h2').text('Account Settings');
 		$('#account-form #sub1').text('Here are the current settings for your account.');
 		$('#user-tf').attr('disabled', 'disabled');
@@ -43,8 +53,7 @@ $(document).ready(function(){
 		$('#account-form-btn1').addClass('btn-danger');
 		$('#account-form-btn2').html('Update');
 
-	// setup the confirm window that displays when the user chooses to delete their account //
-
+		// setup the confirm window that displays when the user chooses to delete their account 
 		$('.modal-confirm').modal({ show : false, keyboard : true, backdrop : true });
 		$('.modal-confirm .modal-header h4').text('Delete Account');
 		$('.modal-confirm .modal-body p').html('Are you sure you want to delete your account?');

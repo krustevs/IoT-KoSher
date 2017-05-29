@@ -9,11 +9,16 @@ block content
 				.navbar-brand Control Panel
 			ul.nav.navbar-nav.navbar-right
 				li
-					.navbar-btn#btn-logout.btn.btn-default
-						| Sign Out
+					#dashboards-btn.navbar-btn.btn.btn-default
+						| Dashboards
 				li
 					#account-settings-btn.navbar-btn.btn.btn-default
 						| Account Settings
+				li
+					.navbar-btn#btn-logout.btn.btn-default
+						| Sign Out
+	#dashboards 
+		#diagram
 
 	include account
 	include modals/alert
