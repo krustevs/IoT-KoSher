@@ -41,12 +41,13 @@ module.exports = function(app) {
 // logged-in user homepage //
 	
 	app.get('/home', function(req, res) {
+		console.log(req.session.user)
 		if (req.session.user == null){
 	// if user is not logged-in redirect back to login page //
 			res.redirect('/');
 		}	else{
 			res.render('home', {
-				title : 'Control Panel',
+				title : 'asd',
 				countries : CT,
 				udata : req.session.user
 			});
@@ -186,10 +187,39 @@ module.exports = function(app) {
 
 // read & write temperature //
 
+	app.get('/temperatures', function (req, res) {
+
+		console.log("GET /temperatures for user " + req.session.user.user);
+		
+		AM.getTemperaturesForUser(req.session.user.user, function(e, o){
+			if (o){
+				res.status(200).send(o);
+			}	else{
+				res.status(400).send('unable to get temperatures');
+			}
+		})
+	});
+
+	app.post('/add_device', function (req, res) {
+
+		console.log("POST /add_device for user " + req.session.user.user);
+		
+		AM.addDeviceForUser(req.session.user.user, req.body['device'], function(e, o){
+			if (o){
+				res.status(200).send(o);
+			}	else{
+				res.status(400).send('unable to add device');
+			}
+		})
+	});
+
 	app.post('/hive_data', function (req, res) {
 		console.log("POST /hive_data " + JSON.stringify(req.body));
 
-		AM.setTemperature(req.body['device'], req.body['temperature'], function(e, o){
+		AM.addTemperatureForDevice(req.body['device'],
+								   req.body['temperature'],
+								   req.body['time'],
+		function(e, o){
 			if (o){
 				res.status(200).send('ok');
 			}	else{

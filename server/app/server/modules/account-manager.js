@@ -33,24 +33,84 @@ db.open(function(e, d){
 });
 
 var accounts = db.collection('accounts');
+var devices = db.collection('devices');
 var temperatures = db.collection('temperatures');
 
 
 /* hive related methods */
-exports.setTemperature = function(dev, newTemp, callback)
+
+getTemperature = function(serial, callback)
 {
-	temperatures.findOne({device:dev}, function(e, o) {
-		if (o){
-			temperatures.updateOne({device:dev}, {$set:{temperature:newTemp}}, callback );
-		}	else{
-			temperatures.insertOne({device:dev, temperature:newTemp}, callback );
+	temperatures.find({device:serial} ).toArray(callback);
+}
+
+exports.getTemperaturesForUser = function(user, callback)
+{
+	accounts.findOne({user:user}, function(err, obj){
+		if (err) {
+			callback(err);
+		} else {
+			var count = 0;
+			var result = {};
+
+			obj.devices.forEach(function(device) {
+
+				getTemperature(device, function(e, o) {
+					if (o) {
+						var temps = [];
+						o.forEach(function(entry) {
+							temps.push({
+								time: entry.time,
+								temperature: entry.temperature
+							});
+						})
+						result[device] = temps;
+						count++;
+
+						if (count == obj.devices.length) {
+							console.log(result)
+							callback(null, result);
+						}
+					}
+				});
+			});
+
 		}
 	});
 }
 
-exports.getTemperature = function(dev, callback)
+exports.addDeviceForUser = function(user, device, callback)
 {
-	temperatures.findOne({device:dev}, callback );
+
+	devices.insertOne(device, function(err, obj) {
+		if (err) {
+			callback(err);
+		} else {
+			accounts.findOne({user:user}, function(e, o){
+
+				o.devices.push(device.serial)
+
+				accounts.save(o, {safe: true}, function(e) {
+					if (e) callback(e);
+					else callback(null, o);
+				});
+
+			});
+		}
+	});
+
+}
+
+exports.addTemperatureForDevice = function(serial, temp, time, callback)
+{
+	devices.findOne({serial:serial}, function(e, o){
+		if (e) {
+			callback(e);
+		} else {
+			console.log(serial, temp, time)
+			temperatures.insertOne({device:serial, temperature:temp, time:time}, callback );
+		}
+	});
 }
 
 
@@ -114,6 +174,7 @@ exports.updateAccount = function(newData, callback)
 		o.name 		= newData.name;
 		o.email 	= newData.email;
 		o.country 	= newData.country;
+		o.devices	= newData.devices;
 		if (newData.pass == ''){
 			accounts.save(o, {safe: true}, function(e) {
 				if (e) callback(e);

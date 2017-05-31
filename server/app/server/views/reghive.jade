@@ -1,0 +1,30 @@
+
+// preset form values if we receive a userdata object //
+- user = typeof(udata) != 'undefined' ? udata : { }
+// store the userId on the client side in a hidden input field //
+input(type='hidden', value= user._id)#userId
+
+#hive-form-container.center-vertical
+	form(method="post")#hive-form.form-horizontal.well
+		h2
+		h6#sub1 Enter the serial number and a label for your hive
+		hr
+		.form-group
+			label.control-label.col-sm-3 Serial Number
+			.col-sm-9
+				input.form-control#serial-tf(type='text', name='serial')
+
+		.form-group
+			label.control-label.col-sm-3 Display Name
+			.col-sm-9
+				input.form-control#display-name-tf(type='text', name='display-name')
+
+		hr
+		.form-buttons
+			button(type='button')#hive-form-btn1.btn.btn-default
+			button(type='submit')#hive-form-btn2.btn.btn-primary
+		.clearfix
+
+// display form errors in a custom modal window //
+
+include modals/form-errors
