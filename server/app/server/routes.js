@@ -218,7 +218,7 @@ module.exports = function(app) {
 
 		AM.addTemperatureForDevice(req.body['device'],
 								   req.body['temperature'],
-								   req.body['time'],
+								   '03/16/2017 16:20:00',
 		function(e, o){
 			if (o){
 				res.status(200).send('ok');

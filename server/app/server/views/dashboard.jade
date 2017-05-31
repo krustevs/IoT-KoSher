@@ -1,0 +1,16 @@
+
+// preset form values if we receive a userdata object //
+- user = typeof(udata) != 'undefined' ? udata : { }
+// store the userId on the client side in a hidden input field //
+input(type='hidden', value= user._id)#userId
+
+#dashboard.center-vertical
+	form#dash-form.form-horizontal.well
+		h2
+		h6#dash-header Hives
+		div#hives-list
+
+
+// display form errors in a custom modal window //
+
+include modals/form-errors

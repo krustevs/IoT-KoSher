@@ -52,10 +52,34 @@ $(document).ready(function(){
 		accountContainer.style.display = 'none';
 		regHiveDiv.style.display = 'none';
 		dashboardsDiv.style.display = '';
-		var dataPoints = [{y : 10}, {y : 13}, {y : 18}, {y : 20}, {y : 17}];
+
+		$.ajax({
+			url: '/temperatures',
+			type: 'GET',
+			data: { id: $('#userId').val()},
+			success: function(data){
+	 			for(device in data) {
+	 				createDash(device, data[device])
+	 			}
+	 		},
+			error: function(jqXHR){
+				console.log(jqXHR.responseText+' :: '+jqXHR.statusText);
+			}
+		});
+
+	}
+
+	function createDash(name, data) {
+
+		var dataPoints = []
+
+		for (idx in data) {
+
+			dataPoints.push({y: data[idx].temperature})
+		}
 		var chart = new CanvasJS.Chart("dashboards", {
 				title : {
-					text : "Temperature"
+					text : name
 				},
 				data : [{
 						type : "spline",
@@ -67,22 +91,8 @@ $(document).ready(function(){
 		chart.render();
 		
 		var yVal = 15, updateCount = 0;
-		chart.options.title.text = "Temperature";
-		var updateChart = function () {
+		chart.options.title.text = name;
 
-			yVal = yVal + Math.round(5 + Math.random() * (-5 - 5));
-	      	updateCount++;
-			
-			dataPoints.push({
-				y : yVal
-			});
-	        
-			chart.render();    
-			
-		};
-
-		// update chart every second
-		setInterval(function(){updateChart()}, 1000);
 	}
 
 	function showAccountSettings(){
