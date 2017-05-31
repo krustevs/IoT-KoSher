@@ -31,6 +31,9 @@ $(document).ready(function(){
 	var settingsButton = document.getElementById('account-settings-btn');
 	settingsButton.addEventListener('click', showAccountSettings);
 
+	var hiveRegButton = document.getElementById('reg-hive-btn');
+	hiveRegButton.addEventListener('click', showRegHive);
+
 	//hide the account settings
 	var accountContainer = document.getElementById('account-form-container');
 	accountContainer.style.display = 'none';
@@ -42,8 +45,12 @@ $(document).ready(function(){
 	var dashboardsDiv = document.getElementById('dashboards');
 	dashboardsDiv.style.display = 'none';
 
+	var regHiveDiv = document.getElementById('hive-form-container');
+	regHiveDiv.style.display = 'none'; 
+
 	function showDashboards(){
 		accountContainer.style.display = 'none';
+		regHiveDiv.style.display = 'none';
 		dashboardsDiv.style.display = '';
 		var dataPoints = [{y : 10}, {y : 13}, {y : 18}, {y : 20}, {y : 17}];
 		var chart = new CanvasJS.Chart("dashboards", {
@@ -80,6 +87,7 @@ $(document).ready(function(){
 
 	function showAccountSettings(){
 		dashboardsDiv.style.display = 'none';
+		regHiveDiv.style.display = 'none';
 		accountContainer.style.display = '';
 
 		// customize the account settings form 
@@ -97,5 +105,13 @@ $(document).ready(function(){
 		$('.modal-confirm .cancel').html('Cancel');
 		$('.modal-confirm .submit').html('Delete');
 		$('.modal-confirm .submit').addClass('btn-danger');
+	}
+
+	function showRegHive(){
+		dashboardsDiv.style.display = 'none';
+		regHiveDiv.style.display = '';
+		accountContainer.style.display = 'none';
+
+		$('#hive-form-btn').html('Add');
 	}
 });

@@ -9,6 +9,9 @@ block content
 				.navbar-brand Control Panel
 			ul.nav.navbar-nav.navbar-right
 				li
+					#reg-hive-btn.navbar-btn.btn.btn-default
+						| Register Hive
+				li
 					#dashboards-btn.navbar-btn.btn.btn-default
 						| Dashboards
 				li
@@ -20,6 +23,7 @@ block content
 	#dashboards 
 
 	include account
+	include reghive
 	include modals/alert
 	include modals/confirm
 
